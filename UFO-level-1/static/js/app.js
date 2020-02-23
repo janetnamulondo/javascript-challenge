@@ -1,26 +1,63 @@
 
-// from data.js
-var tableData = data;
-
+// Assigning Data from data.js a more descriptive name
+var Aliens = data;
+// console.log(Aliens);
 // YOUR CODE HERE!
 // Get reference to the table body 
 var tbody = d3.select("tbody");
 
 //Print the UFO data from the data file 
-console.log(data); 
+ console.log(Aliens); 
 
-//Loop through the data to collect all the values and map them to the table in Html 
-data.forEach(function(ufoReport){
-    console.log(ufoReport);
-    var row = tbody.append("tr");
-    Object.entries(ufoReport).forEach(function([key,value]){
-        console.log(key,value);
-        var cell = row.append("td");
-        cell.text(value);
-
+// Create function to load table 
+function loadtable(data) {
+    // clear the table of any existing data
+    tbody.html("");
+    // Loop through the data to collect all the values and insert them to the table in Html
+    data.forEach(datarow => {
+        var row = tbody.append("tr");
+        Object.entries(datarow).forEach(function([key,value]){
+            console.log(key,value);
+            var cell = row.append("td");
+            cell.text(value);
+        });
     });
+}
 
+// Creating Event Handlers and filters for the data
+// Use a date form in your HTML document and write JavaScript code that will listen for events
+// Select the button 
+var button = d3.select("#filter-btn");
+
+function handleClick() {
+    // Locate the inputElement 
+    var inputElement = d3.select("#datetime");
+
+    // Add the value property that you will enter into the input element 
+    var inputValue = inputElement.property("value");
+    var filterdata = Aliens
+    console.log(filterdata);
+
+    // console.log(inputValue);
+
+    // The value will then go into the span division
+    // d3.select("span").text(inputValue);
+    if (inputValue) {
+    //search through the date/time column to find rows that match user input.
+    // Create filter to get information by date 
+    filterdata = filterdata.filter(row => row.datetime === inputValue)
+    console.log(filterdata);
+    // var selectedDate = Aliens.filter(date => new Date(date.datetime).getTime() === new Date(inputValue).getTime());
+    // console.log(selectedDate);
     
+    }
+    loadtable(filterdata);
+}
+// Call the handleClick function when you select the button. 
 
-})
+button.on("click", handleClick);
+
+// Build a new table once a specific date entered. 
+loadtable(Aliens);
+
 
